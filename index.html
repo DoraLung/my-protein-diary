@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>我的蛋白日記｜每日蛋白質追蹤</title><style>
+:root{--green:#79477e;--ink:#253a32;--muted:#728078;--line:#e1e7de}*{box-sizing:border-box}body{margin:0;background:#e8d9f5;color:var(--ink);font-family:system-ui,-apple-system,"Microsoft JhengHei",sans-serif}header{border-bottom:1px solid var(--line);background:#fafbf6;padding:22px max(24px,calc((100vw - 1100px)/2));display:flex;justify-content:space-between;align-items:center}.brand{font-size:22px;font-weight:800}.brand span{background:var(--green);color:white;padding:8px 12px;border-radius:14px;margin-right:10px}header small{color:var(--muted)}main{max-width:1100px;margin:auto;padding:40px 24px}h1{font-size:34px;margin:8px 0 12px}p{color:var(--muted);line-height:1.7}.eyebrow{color:var(--green);letter-spacing:3px;font-size:12px;font-weight:bold}.datebar{display:flex;gap:8px;align-items:center;margin:28px 0}button,input,select{font:inherit}button{cursor:pointer;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink);padding:11px 16px}button:hover{background:#efe4f8}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #b88acb;outline-offset:2px}input,select{width:100%;border:1px solid var(--line);padding:12px;border-radius:10px;background:white;color:var(--ink)}input[type=date]{width:170px}.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:24px}.card{background:#fffef9;border:1px solid var(--line);border-radius:22px;padding:28px}.progress{background:var(--green);color:#fff;border:0;position:relative;overflow:hidden}.progress p{color:#f1dff3}.progress h2{font-size:16px;font-weight:500;margin:0}.big{font-size:66px;font-weight:750;margin:20px 0 12px;letter-spacing:-3px}.big small{font-size:20px;letter-spacing:0;font-weight:400;color:#f1dff3}.track{height:12px;background:#ffffff26;border-radius:20px;overflow:hidden}.fill{height:100%;background:#f0c3e6;border-radius:20px;transition:width .4s}.progress-bottom{display:flex;justify-content:space-between;margin-top:16px;font-size:14px}.goal{display:flex;gap:8px;align-items:center;margin-top:22px}.goal input{width:85px}.goal button{background:#ffffff15;color:white;border-color:#ffffff40}.goal label{font-size:14px}h2{font-size:20px;margin:0 0 20px}.field{margin:18px 0}.field label{display:block;font-size:14px;margin-bottom:8px}.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.primary{background:var(--green);color:white;border:0;width:100%;font-weight:600;margin-top:6px}.primary:hover{background:#603564}.hint{font-size:12px}.records{margin-top:24px}.record-title{display:flex;align-items:center;justify-content:space-between}.record-title small{color:var(--muted)}.meal{border-top:1px solid var(--line);padding-top:18px;margin-top:18px}.mealhead{display:flex;justify-content:space-between;font-size:14px;font-weight:600;color:var(--muted)}.item{display:flex;align-items:center;gap:12px;padding:14px 0}.item .name{flex:1;overflow-wrap:anywhere}.item strong{color:var(--green);white-space:nowrap}.delete{border:0;padding:6px 9px;color:#8b756a;font-size:13px}.empty{text-align:center;padding:32px 15px;color:var(--muted)}.empty span{display:block;font-size:35px;margin-bottom:12px}.week{display:flex;gap:10px;align-items:end;height:145px;margin-top:25px}.day{flex:1;text-align:center;font-size:12px;color:var(--muted);cursor:pointer}.bar-wrap{height:105px;display:flex;align-items:end;justify-content:center}.bar{background:#d7bee7;width:65%;min-height:3px;border-radius:6px 6px 0 0}.day.active .bar{background:var(--green)}.day small{display:block;margin:6px 0}.footer{text-align:center;font-size:12px;margin-top:28px;color:var(--muted)}#status{min-height:22px;font-size:13px;color:var(--green);margin:12px 0 0}.tools{display:flex;gap:8px;margin-top:20px}.tools button{font-size:12px} @media(max-width:720px){header{padding:18px 20px}header small{display:none}main{padding:28px 18px}h1{font-size:28px}.grid{grid-template-columns:1fr}.card{padding:23px}.big{font-size:58px}.datebar{flex-wrap:wrap}.goal{flex-wrap:wrap}.tools{flex-wrap:wrap}}
+</style></head><body><header><div class="brand">我的蛋白日記</div><small>一餐一筆，累積你的每日進度</small></header><main><div class="eyebrow">YOUR DAILY PROTEIN</div><h1>好好吃飯，記錄每一天。</h1><p>把每一餐記下來，讓蛋白質攝取變得清楚簡單。</p><div class="datebar"><button id="prev" aria-label="前一天">←</button><input type="date" id="date" aria-label="紀錄日期"><button id="next" aria-label="後一天">→</button><button id="today">回到今天</button></div><div class="grid"><section><div class="card progress"><h2>當日蛋白質攝取</h2><div class="big"><span id="total">0</span> <small>/ <span id="goalText">80</span> 克</small></div><div class="track" role="progressbar" aria-label="每日目標進度" id="progress"><div class="fill" id="fill"></div></div><div class="progress-bottom"><span id="remaining"></span><span id="percent"></span></div><form class="goal" id="goalForm"><label for="goal">每日目標</label><input id="goal" type="number" min="1" max="1000" step="0.1" required value="80" aria-label="每日目標克數"><span>克</span><button type="submit">儲存目標</button></form></div><div class="card records"><div class="record-title"><h2>飲食紀錄</h2><small id="count"></small></div><div id="list"></div></div></section><aside><div class="card"><h2>＋ 記錄這一餐</h2><form id="foodForm"><div class="field"><label for="food">食物名稱</label><input id="food" placeholder="例如：雞胸肉、豆漿" maxlength="80" required></div><div class="row"><div class="field"><label for="protein">蛋白質（克）</label><input id="protein" type="number" placeholder="例如：25" min="0.1" max="1000" step="0.1" required></div><div class="field"><label for="meal">餐別</label><select id="meal"><option>早餐</option><option>午餐</option><option>晚餐</option><option>點心</option></select></div></div><button class="primary" type="submit">新增飲食紀錄</button></form><p class="hint">依食品包裝標示或你已查到的資料，填入實際食用份量的蛋白質克數。</p><div id="status" role="status" aria-live="polite"></div></div><div class="card records"><h2>最近七天</h2><p class="hint">以所選日期為最後一天，點選日期查看紀錄。</p><div class="week" id="week"></div></div><div class="tools"><button id="export">匯出備份</button><button id="import">匯入備份</button><input type="file" id="file" accept="application/json,.json" hidden></div></aside></div><div class="footer">資料儲存在此瀏覽器。清除瀏覽器資料前，記得匯出備份。每日目標由你自行設定。</div></main><script>
+'use strict';
+const KEY='protein-diary-v1', $=id=>document.getElementById(id), meals=['早餐','午餐','晚餐','點心'];
+const localDate=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+const shift=(s,n)=>{const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return localDate(d)};
+const num=n=>Number(n.toFixed(1)).toString();let state={goal:80,entries:[]};
+function valid(s){return s&&Number.isFinite(s.goal)&&s.goal>=1&&s.goal<=1000&&Array.isArray(s.entries)&&s.entries.every(e=>typeof e.id==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(e.date)&&!Number.isNaN(new Date(e.date+'T12:00:00').getTime())&&typeof e.name==='string'&&e.name.trim().length>0&&e.name.length<=80&&Number.isFinite(e.protein)&&e.protein>=0&&e.protein<=1000&&meals.includes(e.meal))}
+try{const raw=localStorage.getItem(KEY);if(raw){const saved=JSON.parse(raw);if(valid(saved))state=saved;else $('status').textContent='儲存資料格式異常，請匯入有效備份。'}}catch(e){$('status').textContent='無法讀取瀏覽器儲存資料。'}
+$('date').value=localDate(new Date());$('goal').value=state.goal;
+function persist(next){try{localStorage.setItem(KEY,JSON.stringify(next));state=next;return true}catch(e){$('status').textContent='儲存失敗，請確認瀏覽器允許儲存資料。';return false}}
+const totalFor=d=>state.entries.filter(e=>e.date===d).reduce((s,e)=>s+e.protein,0);
+function render(){const date=$('date').value,total=totalFor(date),pct=total/state.goal*100;$('total').textContent=num(total);$('goalText').textContent=num(state.goal);$('remaining').textContent=total>=state.goal?'已達成每日目標 ✓':'距離目標還有 '+num(state.goal-total)+' 克';$('percent').textContent=Math.round(pct)+'%';$('fill').style.width=Math.min(pct,100)+'%';$('progress').setAttribute('aria-valuemin','0');$('progress').setAttribute('aria-valuemax',state.goal);$('progress').setAttribute('aria-valuenow',Math.min(total,state.goal));const entries=state.entries.filter(e=>e.date===date);$('count').textContent=entries.length+' 筆';$('list').replaceChildren();if(!entries.length){const empty=document.createElement('div');empty.className='empty';const icon=document.createElement('span');icon.textContent='🥣';empty.append(icon,document.createTextNode('這天還沒有紀錄，新增第一餐吧。'));$('list').append(empty)}for(const meal of meals){const rows=entries.filter(e=>e.meal===meal);if(!rows.length)continue;const section=document.createElement('div');section.className='meal';const head=document.createElement('div');head.className='mealhead';const label=document.createElement('span'),sum=document.createElement('span');label.textContent=meal;sum.textContent=num(rows.reduce((s,e)=>s+e.protein,0))+' 克';head.append(label,sum);section.append(head);for(const e of rows){const row=document.createElement('div');row.className='item';const name=document.createElement('span');name.className='name';name.textContent=e.name;if(['ai-estimate','local-estimate'].includes(e.source)){const note=document.createElement('small');note.className='estimated-note';note.textContent=(e.source==='local-estimate'?'免費資料估算':'AI 估算')+(typeof e.estimate?.portion==='string'?' · '+e.estimate.portion:'');name.append(note);}const amount=document.createElement('strong');amount.textContent=(['ai-estimate','local-estimate'].includes(e.source)?'約 ':'')+num(e.protein)+' 克';const del=document.createElement('button');del.className='delete';del.textContent='刪除';del.setAttribute('aria-label','刪除 '+e.name);del.onclick=()=>{if(persist({...state,entries:state.entries.filter(x=>x.id!==e.id)})){render();$('status').textContent='已刪除紀錄。'}};const editButton=document.createElement('button');editButton.type='button';editButton.className='edit-record';editButton.textContent='編輯';editButton.setAttribute('aria-label','編輯 '+e.name);editButton.onclick=()=>window.editDiaryEntry(e.id);row.append(name,amount,editButton,del);section.append(row)}$('list').append(section)}$('week').replaceChildren();const days=Array.from({length:7},(_,i)=>shift(date,i-6)),max=Math.max(state.goal,...days.map(totalFor));for(const d of days){const val=totalFor(d),b=document.createElement('div');b.className='day'+(d===date?' active':'');b.tabIndex=0;b.setAttribute('role','button');b.setAttribute('aria-label',d+'，'+num(val)+'克');const wrap=document.createElement('div');wrap.className='bar-wrap';const bar=document.createElement('div');bar.className='bar';bar.style.height=Math.max(3,val/max*100)+'%';wrap.append(bar);const amount=document.createElement('small');amount.textContent=num(val)+'g';const label=document.createElement('span');label.textContent=d.slice(5).replace('-','/');b.append(wrap,amount,label);const choose=()=>{$('date').value=d;render()};b.onclick=choose;b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();choose()}};$('week').append(b)}}
+$('foodForm').onsubmit=e=>{e.preventDefault();const name=$('food').value.trim(),protein=Number($('protein').value);if(!name){$('food').setCustomValidity('請輸入食物名稱');$('food').reportValidity();return}if(!Number.isFinite(protein)||protein<=0||protein>1000)return;const entry={id:typeof crypto.randomUUID==='function'?crypto.randomUUID():Date.now()+'-'+Math.random(),date:$('date').value,name,protein,meal:$('meal').value};if(persist({...state,entries:[...state.entries,entry]})){$('food').value='';$('protein').value='';render();$('status').textContent='已新增 '+name+'，'+num(protein)+' 克蛋白質。';$('food').focus()}};$('food').oninput=()=> $('food').setCustomValidity('');
+$('goalForm').onsubmit=e=>{e.preventDefault();const goal=Number($('goal').value);if(Number.isFinite(goal)&&goal>=1&&goal<=1000&&persist({...state,goal})){render();$('status').textContent='每日目標已更新為 '+num(goal)+' 克。'}};
+$('date').onchange=()=>{if($('date').value)render();else $('date').value=localDate(new Date())};$('prev').onclick=()=>{$('date').value=shift($('date').value,-1);render()};$('next').onclick=()=>{$('date').value=shift($('date').value,1);render()};$('today').onclick=()=>{$('date').value=localDate(new Date());render()};
+$('export').onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='蛋白日記-'+localDate(new Date())+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('status').textContent='備份已匯出。'};
+$('import').onclick=()=> $('file').click();$('file').onchange=async()=>{const f=$('file').files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!valid(data))throw Error();if(!confirm('匯入將取代目前紀錄與目標，是否繼續？'))return;if(persist(data)){$('goal').value=state.goal;render();$('status').textContent='備份已匯入。'}}catch(e){$('status').textContent='無法匯入，請選擇此網站匯出的有效 JSON 備份。'}finally{$('file').value=''}};render();
+</script>
+<style>
+.estimate-card{margin-bottom:24px}.estimate-card h2{margin-bottom:10px}.estimate-card textarea{font:inherit;line-height:1.6;resize:vertical;width:100%;min-height:110px;padding:12px;border:1px solid var(--line);border-radius:10px;color:var(--ink);background:white}.estimate-card textarea:focus-visible{outline:3px solid #b88acb;outline-offset:2px}.estimate-card .hint{font-size:14px}.estimate-card .service{font-size:13px;margin:12px 0;color:var(--muted)}button:disabled{opacity:.55;cursor:wait}.estimate-result{margin-top:20px;border-top:1px solid var(--line);padding-top:20px}.estimate-result h3{font-size:18px;margin:0 0 10px}.estimate-value{font-size:32px;font-weight:750;color:var(--green)}.estimate-result ul{padding-left:20px;color:var(--muted);font-size:14px;line-height:1.6}.estimate-result label{display:block;font-size:14px;margin:16px 0 8px}.estimate-error{color:#9b4639;font-size:14px;line-height:1.6;min-height:22px}.estimated-note{display:block;font-size:12px;font-weight:400;color:var(--muted);line-height:1.5}.privacy{font-size:12px;color:var(--muted);line-height:1.6}
+</style>
+<script>
+{
+const freeSource='https://802.mnd.gov.tw/815/files/uploads/%E9%A3%9F%E7%89%A9%E4%BB%A3%E6%8F%9B%E8%A1%A82019.pdf';
+const freeCatalog=[
+ ['蝦肉餛飩湯','蝦肉餛飩湯|鮮蝦餛飩湯|蝦仁餛飩湯|蝦肉餛飩|鮮蝦餛飩',8,'顆',8*(5*7/50+5*7/35+5*2/30),'示範配方：每顆以生蝦仁 5 克、瘦豬肉 5 克、餛飩皮 5 克換算；一碗預設 8 顆。清湯未計入。不是店家配方。','recipe'],
+ ['豬肉餛飩湯','豬肉餛飩湯|豬肉餛飩|餛飩湯|餛飩',8,'顆',8*(10*7/35+5*2/30),'示範配方：每顆生瘦豬肉 10 克、餛飩皮 5 克；一碗預設 8 顆，清湯未計入。','recipe'],
+ ['豬肉水餃','豬肉水餃|高麗菜水餃|水餃',10,'顆',10*(8*7/35+10*2/30+4*.01),'示範配方：每顆生瘦豬肉 8 克、餃子皮 10 克、高麗菜 4 克；一份預設 10 顆。','recipe'],
+ ['原味蛋餅','原味蛋餅|蛋餅',1,'份',9,'示範配方：雞蛋一顆約 7 克蛋白質、蛋餅皮 35 克約 2 克；不含其他內餡。','recipe'],
+ ['雞胸肉飯','雞胸肉飯',1,'碗',100*7/30+9,'示範配方：雞胸肉生重 100 克、熟飯 160 克、蔬菜生重 100 克；不含其他配菜。','recipe'],
+ ['蛋吐司','蛋吐司',1,'份',11,'示範配方：雞蛋 1 顆約 7 克蛋白質，吐司 60 克約 4 克；不含起司與肉類。','recipe'],
+ ['鮪魚蛋三明治','鮪魚蛋三明治',1,'份',40*7/30+4+3.5,'示範配方：鮪魚可食生重 40 克、吐司 60 克、半顆蛋。不直接套用罐頭品牌標示。','recipe'],
+ ['火腿蛋吐司','火腿蛋吐司',1,'份',7+7+4,'示範配方：火腿 45 克約 7 克蛋白質、雞蛋 1 顆、吐司 60 克。','recipe'],
+ ['豬肉包','豬肉包|肉包',1,'個',10,'示範配方：麵皮依饅頭換算 60 克約 4 克蛋白質、瘦豬肉生重 30 克約 6 克；大小與肥瘦比例不同。','recipe'],
+ ['雞腿便當','雞腿便當|雞腿飯',1,'份',30,'示範配方：去骨雞腿可食生重 120 克約 21 克蛋白質、熟飯 160 克約 8 克、蔬菜生重 100 克約 1 克；不計其他配菜。','recipe'],
+ ['排骨便當','排骨便當|排骨飯',1,'份',29,'示範配方：去骨豬大排可食生重 100 克約 20 克蛋白質、熟飯 160 克約 8 克、蔬菜生重 100 克約 1 克；裹粉與其他配菜未計入。','recipe'],
+ ['雞胸便當','雞胸便當',1,'份',100*7/30+9,'示範配方：雞胸肉生重 100 克、熟飯 160 克、蔬菜生重 100 克；未包含其他配菜。','recipe'],
+ ['滷肉飯','滷肉飯|魯肉飯',1,'碗',14,'示範配方：熟飯 160 克約 8 克蛋白質、瘦豬肉生重 30 克約 6 克；未含滷蛋。實際肥肉比例與肉量差異大。','recipe'],
+ ['雞肉飯','雞肉飯',1,'碗',22,'示範配方：雞胸肉生重 60 克約 14 克蛋白質、熟飯 160 克約 8 克；未含其他配菜。','recipe'],
+ ['牛肉麵','牛肉麵',1,'碗',28.5,'示範配方：牛腱生重 100 克約 20 克蛋白質、熟麵 240 克約 8 克、蔬菜生重 50 克約 0.5 克；湯未計入。','recipe'],
+ ['陽春麵','陽春麵',1,'碗',8.5,'示範配方：熟麵 240 克約 8 克蛋白質、蔬菜生重 50 克約 0.5 克；湯與肉燥未計入。','recipe'],
+ ['豬肉湯麵','豬肉湯麵',1,'碗',22.5,'示範配方：瘦豬肉生重 70 克約 14 克蛋白質、熟麵 240 克約 8 克、蔬菜生重 50 克約 0.5 克；湯未計入。','recipe'],
+ ['雞蛋','水煮蛋|茶葉蛋|雞蛋',1,'顆',7,'雞蛋一顆以可食生重 55 克、約 7 克蛋白質換算。','egg'],
+ ['無糖豆漿','無糖豆漿',190,'毫升',7,'代換表每 190 毫升約 7 克蛋白質；一杯預設 190 毫升。品牌濃度不同，依標示調整。','cup'],
+ ['牛奶','低脂牛奶|全脂牛奶|脫脂牛奶|鮮奶|牛奶',240,'毫升',8,'一杯預設 240 毫升，約 8 克蛋白質；不適用調味乳與植物奶。','cup'],
+ ['無糖優格','無糖優格',210,'克',8,'一般無糖優格 210 克約 8 克蛋白質；不適用希臘優格。',''],
+ ['傳統豆腐','傳統豆腐|板豆腐',80,'克',7,'可食生重 80 克約 7 克蛋白質。',''],
+ ['嫩豆腐','嫩豆腐',140,'克',7,'140 克約 7 克蛋白質；一盒假設 280 克。','box'],
+ ['五香豆干','五香豆干|五香豆乾',35,'克',7,'可食生重 35 克約 7 克蛋白質；不直接套用其他豆干。',''],
+ ['毛豆','毛豆',50,'克',7,'去莢可食生重 50 克約 7 克蛋白質。','raw'],
+ ['雞胸肉','雞胸肉',100,'克',100*7/30,'生重 30 克約 7 克蛋白質，100 克約 23.3 克；不直接套用熟重。','raw'],
+ ['瘦豬肉','瘦豬肉|豬里肌',100,'克',20,'可食生重 35 克約 7 克蛋白質；不含肥肉。','raw'],
+ ['牛腱','牛腱',100,'克',20,'可食生重 35 克約 7 克蛋白質。','raw'],
+ ['蝦仁','蝦仁',100,'克',14,'去殼生重 50 克約 7 克蛋白質。','raw'],
+ ['鮭魚','鮭魚',100,'克',20,'可食生重 35 克約 7 克蛋白質。','raw'],
+ ['白飯','白飯',160,'克',8,'熟重 40 克約 2 克蛋白質；一碗預設 160 克。','bowl'],
+ ['熟麵條','熟麵條|麵條',120,'克',4,'熟重 60 克約 2 克蛋白質；一碗預設 120 克，不含湯與配菜。','bowl']
+].map(([name,aliases,base,unit,protein,note,type])=>({name,aliases:aliases.split('|'),base,unit,protein,note,type}));
+const freePanel=document.createElement('section');freePanel.className='card estimate-card';
+freePanel.innerHTML=`<h2>免費餐點估算</h2><p class="hint">輸入餐點與份量，用內建食物資料換算。</p><div class="service">已啟用 · 不需金鑰 · 可離線使用</div><form id="freeForm"><div class="field"><label for="freeDescription">吃了什麼、吃了多少？</label><textarea id="freeDescription" maxlength="400" required placeholder="例如：蝦肉餛飩湯一碗一人份，8 顆"></textarea></div><div class="field"><label for="freeChoice">或從內建餐點選擇</label><select id="freeChoice"><option value="">選擇常見餐點…</option></select></div><div class="field"><label for="freeMeal">餐別</label><select id="freeMeal"><option>早餐</option><option>午餐</option><option>晚餐</option><option>點心</option></select></div><button class="primary" type="submit">估算蛋白質</button></form><p class="privacy">每次記錄一項餐點；同一餐可分別新增多項。計算留在此瀏覽器。基本食物採食物代換表；複合餐點採示範配方，請確認份量。</p><div id="freeMessage" class="estimate-error" role="status" aria-live="polite"></div><div id="freeResult" class="estimate-result" hidden><h3 id="freeDish"></h3><div id="freeValue" class="estimate-value"></div><p id="freePortion" class="hint"></p><ul id="freeAssumptions"></ul><p class="hint"><a id="freeSource" target="_blank" rel="noopener">查看參考食物代換表</a>（2019 年；並非整餐實測）</p><label for="freeConfirmed">確認蛋白質（克，可調整）</label><input id="freeConfirmed" type="number" min="0" max="1000" step="0.1" required><p id="freeDestination" class="hint"></p><button class="primary" id="freeAdd" type="button">確認並加入飲食紀錄</button></div>`;
+document.querySelector('aside').prepend(freePanel);$('freeSource').href=freeSource;
+const quick=document.createElement('div');quick.className='quick-meals';
+for(const [title,names] of [['早餐',['原味蛋餅','蛋吐司','火腿蛋吐司','鮪魚蛋三明治','豬肉包','無糖豆漿']],['午餐／晚餐',['雞腿便當','排骨便當','雞胸便當','滷肉飯','雞肉飯','牛肉麵','陽春麵','豬肉水餃','蝦肉餛飩湯']]]){const label=document.createElement('p');label.className='hint';label.textContent=title;quick.append(label);const group=document.createElement('div');group.style.cssText='display:flex;gap:6px;flex-wrap:wrap';for(const name of names){const button=document.createElement('button');button.type='button';button.textContent=name;button.style.cssText='font-size:14px;padding:8px 10px';button.onclick=()=>{$('freeChoice').value=name;$('freeChoice').dispatchEvent(new Event('change'));$('freeMeal').value=title==='早餐'?'早餐':'午餐';$('freeDescription').focus();};group.append(button);}quick.append(group);}
+$('freeForm').prepend(quick);
+for(const item of freeCatalog){const opt=document.createElement('option');opt.value=item.name;opt.textContent=item.name;$('freeChoice').append(opt);}
+let freePending=null;
+const freeReset=()=>{freePending=null;$('freeResult').hidden=true;$('freeMessage').textContent='';};
+$('freeDescription').oninput=()=>{freeReset();$('freeDescription').setCustomValidity('');$('freeChoice').value='';};
+$('freeChoice').onchange=()=>{freeReset();if($('freeChoice').value){const item=freeCatalog.find(x=>x.name===$('freeChoice').value);$('freeDescription').value=item.name+' '+item.base+item.unit;$('freeDescription').setCustomValidity('');}};
+function freeEstimate(input){
+ let text=input.normalize('NFKC').replaceAll('公克','克').replace(/ml/gi,'毫升').replaceAll('公升','升');
+ const cn={'零':0,'一':1,'二':2,'兩':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9};
+ text=text.replace(/[零一二兩三四五六七八九十]+(?=\s*(?:顆|個|粒|碗|份|杯|克|毫升|升|盒|人))/g,s=>{const p=s.split('十');return p.length===2?String((cn[p[0]]??1)*10+(cn[p[1]]??0)):String(cn[s]??s);}).replace(/半\s*(顆|個|粒|碗|份|杯|盒)/g,'0.5$1').replace(/(\d+)\/([1-9]\d*)\s*(顆|個|粒|碗|份|杯|盒)/g,(_,a,b,u)=>Number(a)/Number(b)+u);
+ const matches=freeCatalog.flatMap(item=>item.aliases.filter(a=>text.includes(a)).map(alias=>({item,alias}))).sort((a,b)=>b.alias.length-a.alias.length);
+ if(!matches.length)throw Error('目前沒有這個餐點的參考資料。請從內建餐點選擇，或用下方手動記錄。');
+ const {item,alias}=matches[0],rest=text.replace(alias,'');
+ if(freeCatalog.some(other=>other!==item&&other.aliases.some(a=>rest.includes(a))))throw Error('請一次估算一項餐點，再分別加入同一餐。');
+ if(/不含|不要|沒有|加料|加蛋|加肉|起司|培根|火腿|玉米|希臘|炒|炸|乾麵/.test(rest))throw Error('此描述包含內建配方以外的變化，請分項記錄或手動輸入。');
+ if([...text.matchAll(/(\d+)\s*人/g)].some(m=>Number(m[1])!==1))throw Error('請輸入你個人實際吃的顆數、重量或碗數。');
+ if(item.type==='raw'&&/熟/.test(text))throw Error('此食物使用生重，請輸入生重；只有熟重時請依標示手動記錄。');
+ const amounts=[...text.matchAll(/(\d+(?:\.\d+)?)\s*(毫升|顆|個|粒|碗|份|杯|克|升|盒)/g)].map(m=>({q:Number(m[1]),u:m[2]}));
+ if(amounts.some(a=>a.q<=0)||/-\s*\d/.test(text))throw Error('份量需大於 0，請修正後再估算。');
+ let factor=1,portion=item.base+item.unit+'（未提供明確份量，採預設）';
+ const counts=['顆','個','粒'];
+ const found=item.unit==='顆'?(amounts.find(a=>counts.includes(a.u))||amounts[0]):(amounts.find(a=>a.u===item.unit)||amounts[0]);
+ if(found){const {q,u}=found;
+ if(u===item.unit||(item.unit==='顆'&&counts.includes(u)))factor=q/item.base;
+ else if(item.type==='egg'&&u==='克')factor=q/55;
+ else if(u==='份'||(item.type==='recipe'&&u==='碗'))factor=q;
+ else if(u==='碗'&&item.type==='bowl')factor=q;
+ else if(u==='杯'&&item.type==='cup')factor=q;
+ else if(u==='升'&&item.unit==='毫升')factor=q*1000/item.base;
+ else if(u==='盒'&&item.type==='box')factor=q*2;
+ else throw Error('此食物不支援「'+u+'」換算，請改用 '+item.unit+'。');
+ portion=q+u+(item.unit==='顆'&&['碗','份'].includes(u)?'，每份按 '+item.base+' 顆':'');
+ if(amounts.filter(a=>a.u===u).length>1)throw Error('請將多個份量整理成此次實際吃的總量。');
+ }
+ if(factor<=0||factor>100||item.protein*factor>1000)throw Error('份量過大，請確認個人本次實際食用量。');
+ return {name:item.name,protein:Math.round(item.protein*factor*10)/10,portion,description:input,assumptions:[item.note,'換算基準：'+item.base+item.unit+' 約 '+num(item.protein)+' 克蛋白質；本次 '+num(factor)+' 倍。','這是代換與配方粗估，大小、品牌與製法可能不同，請依實際標示調整。'],sourceUrl:freeSource};
+}
+$('freeForm').onsubmit=event=>{event.preventDefault();freeReset();const description=$('freeDescription').value.trim();if(!description){$('freeDescription').setCustomValidity('請輸入餐點名稱');$('freeDescription').reportValidity();return;}try{freePending={...freeEstimate(description),date:$('date').value,meal:$('freeMeal').value};$('freeDish').textContent=freePending.name;$('freeValue').textContent='約 '+num(freePending.protein)+' 克';$('freePortion').textContent='本次份量：'+freePending.portion;$('freeAssumptions').replaceChildren();for(const text of freePending.assumptions){const li=document.createElement('li');li.textContent=text;$('freeAssumptions').append(li);}$('freeConfirmed').value=freePending.protein;$('freeDestination').textContent='將加入 '+freePending.date+' 的'+freePending.meal+'。';$('freeResult').hidden=false;}catch(e){$('freeMessage').textContent=e.message;}};
+$('freeAdd').onclick=()=>{if(!freePending||!$('freeConfirmed').reportValidity())return;const protein=Number($('freeConfirmed').value);if(!Number.isFinite(protein)||protein<0||protein>1000)return;const entry={id:crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random(),date:freePending.date,meal:freePending.meal,name:freePending.name,protein,source:'local-estimate',estimate:{...freePending}};if(persist({...state,entries:[...state.entries,entry]})){$('date').value=entry.date;render();freeReset();$('freeDescription').value='';$('freeChoice').value='';$('freeMessage').textContent='已加入 '+entry.name+'，約 '+num(protein)+' 克。';}};
+
+const portionControls=document.createElement('div');portionControls.className='portion-controls';portionControls.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin:16px 0';
+for(const [label,factor] of [['半份',0.5],['一份',1],['兩份',2]]){const button=document.createElement('button');button.type='button';button.textContent=label;button.onclick=()=>{if(!freePending)return;const base=freePending.baseProtein??freePending.protein;const portion=freePending.basePortion??freePending.portion;const protein=Math.round(base*factor*10)/10;if(protein>1000){$('freeMessage').textContent='調整後克數過大，請確認份量。';return;}freePending.baseProtein=base;freePending.basePortion=portion;freePending.protein=protein;freePending.portion=portion+' × '+factor;$('freeConfirmed').value=protein;$('freeValue').textContent='約 '+num(protein)+' 克';$('freePortion').textContent='本次份量：'+freePending.portion;for(const b of portionControls.children)b.setAttribute('aria-pressed',String(b===button));};portionControls.append(button);}
+const portionHint=document.createElement('p');portionHint.className='hint';portionHint.textContent='份量按上方輸入的食用量調整；例如 8 顆的半份為 4 顆。';$('freeResult').insertBefore(portionControls,$('freeResult').querySelector('label'));portionControls.before(portionHint);
+window.freeEstimate=freeEstimate;
+}
+
+</script><script>
+{
+const customValid=f=>f&&typeof f.name==='string'&&f.name.trim()&&f.name.length<=80&&Number.isFinite(f.protein)&&f.protein>0&&f.protein<=1000;
+const existing=Array.isArray(state.customFoods)?state.customFoods.filter(customValid):[];
+state.customFoods=[...existing];
+for(const entry of state.entries){if(!entry.source&&customValid(entry)&&!state.customFoods.some(f=>f.name===entry.name))state.customFoods.push({name:entry.name,protein:entry.protein});}
+const customPanel=document.createElement('section');customPanel.className='card records';
+const title=document.createElement('h2');title.textContent='我的常用餐點';
+const hint=document.createElement('p');hint.className='hint';hint.textContent='手動新增的餐點會自動收錄。點選可帶入上次記錄的克數，請確認本次份量後再新增。';
+const customList=document.createElement('div');customList.style.cssText='display:flex;gap:8px;flex-wrap:wrap';
+customPanel.append(title,hint,customList);document.querySelector('aside').append(customPanel);
+function chooseCustom(food){$('food').value=food.name;$('protein').value=food.protein;$('food').setCustomValidity('');$('status').textContent='已帶入 '+food.name+'；請確認本次蛋白質與餐別，再按新增。';$('foodForm').scrollIntoView({behavior:'smooth',block:'center'});$('protein').focus({preventScroll:true});}
+let customGroup=null;
+function refreshCustom(){customList.replaceChildren();if(customGroup)customGroup.remove();customGroup=document.createElement('optgroup');customGroup.label='我的常用餐點（自行記錄）';
+const foods=state.customFoods||[];foods.forEach((food,index)=>{const button=document.createElement('button');button.type='button';button.textContent=food.name+' · '+num(food.protein)+' 克';button.onclick=()=>chooseCustom(food);customList.append(button);const opt=document.createElement('option');opt.value='custom:'+index;opt.textContent=food.name+'（上次 '+num(food.protein)+' 克）';customGroup.append(opt);});
+if(foods.length)$('freeChoice').append(customGroup);else{const empty=document.createElement('p');empty.className='hint';empty.textContent='還沒有自訂餐點。用「記錄這一餐」手動新增後，就會出現在這裡。';customList.append(empty);}}
+const originalChoice=$('freeChoice').onchange;
+$('freeChoice').onchange=event=>{if($('freeChoice').value.startsWith('custom:')){const food=(state.customFoods||[])[Number($('freeChoice').value.slice(7))];if(food)chooseCustom(food);return;}originalChoice(event);};
+const originalPersist=persist;
+persist=function(next){const added=next.entries.filter(e=>!state.entries.some(old=>old.id===e.id));const foods=Array.isArray(next.customFoods)?next.customFoods.filter(customValid).map(f=>({...f})):[];
+for(const entry of added){if(entry.source||!customValid(entry))continue;const index=foods.findIndex(f=>f.name===entry.name);const food={name:entry.name,protein:entry.protein};if(index<0)foods.push(food);else foods[index]=food;}
+const ok=originalPersist({...next,customFoods:foods});if(ok)refreshCustom();return ok;};
+refreshCustom();
+}
+
+</script><style>
+.night-feedback{position:fixed;right:24px;bottom:24px;z-index:1000;max-width:360px;width:calc(100% - 36px);padding:24px;background:#fff9ff;border:2px solid #c99ad6;box-shadow:0 12px 48px #55326030;border-radius:22px;text-align:center;animation:night-in .5s ease-out}.night-feedback[hidden]{display:none}.night-feedback h2{margin:12px 0 8px;font-size:21px}.night-feedback p{font-size:14px;margin:8px 0}.night-icon{display:block;font-size:66px;line-height:1.3;transform-origin:center}.night-heart{color:#d94486;animation:night-love 1s ease-in-out 3}.night-reminder{animation:night-wiggle .7s ease-in-out 3}.night-close{position:absolute;right:10px;top:8px;padding:5px 10px;border:0;background:transparent;font-size:22px}.night-rule{font-size:12px;color:var(--muted);margin:14px 0 0;line-height:1.6}@keyframes night-in{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}@keyframes night-love{0%,100%{transform:scale(1)}35%{transform:scale(1.22) rotate(-6deg)}65%{transform:scale(1.08) rotate(6deg)}}@keyframes night-wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}@media(prefers-reduced-motion:reduce){.night-feedback,.night-heart,.night-reminder{animation:none}}@media(max-width:600px){.night-feedback{right:18px;bottom:18px}}
+</style>
+<script>
+{
+const nightPanel=document.createElement('section');nightPanel.className='night-feedback';nightPanel.hidden=true;nightPanel.setAttribute('role','status');nightPanel.setAttribute('aria-live','polite');
+nightPanel.innerHTML='<button type="button" class="night-close" aria-label="關閉晚間通知">×</button><span class="night-icon" aria-hidden="true"></span><h2></h2><p class="night-message"></p><p class="night-date"></p>';
+document.body.append(nightPanel);nightPanel.querySelector('button').onclick=()=>{nightPanel.hidden=true;};
+const nightRule=document.createElement('p');nightRule.className='night-rule';nightRule.textContent='每晚 22:00（台灣時間）檢查：達標送一顆愛心，未達標顯示動畫提醒。網頁需開啟；當晚 22:00 後開啟也會檢查，每天通知一次。';document.querySelector('.progress').after(nightRule);
+function checkNightFeedback(){
+ const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+ const get=k=>parts.find(p=>p.type===k).value;const date=get('year')+'-'+get('month')+'-'+get('day');
+ if(Number(get('hour'))<22)return;
+ const feedback=state.nightFeedback&&typeof state.nightFeedback==='object'&&!Array.isArray(state.nightFeedback)?state.nightFeedback:{};
+ if(feedback[date])return;
+ const total=totalFor(date),goal=state.goal,achieved=total>=goal;
+ const record={achieved,total,goal,heart:achieved?1:0,checkedAt:new Date().toISOString()};
+ if(!persist({...state,nightFeedback:{...feedback,[date]:record}}))return;
+ const icon=nightPanel.querySelector('.night-icon');icon.textContent=achieved?'♥':'🔔';icon.className='night-icon '+(achieved?'night-heart':'night-reminder');
+ nightPanel.querySelector('h2').textContent=achieved?'今天達標，送你一顆愛心！':'今天的蛋白質還沒達標';
+ nightPanel.querySelector('.night-message').textContent=achieved?'已記錄 '+num(total)+' 克，達成 '+num(goal)+' 克目標。':'已記錄 '+num(total)+'／'+num(goal)+' 克，距離目標還差 '+num(goal-total)+' 克。若有漏記，可以補上今天的餐點。';
+ nightPanel.querySelector('.night-date').textContent=date+' · 晚間檢查';nightPanel.hidden=false;
+}
+checkNightFeedback();setInterval(checkNightFeedback,30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkNightFeedback();});
+}
+</script>
+<style>.present-demo{margin:24px 0;background:#f5eafa;border:1px dashed #b58bc5;border-radius:18px;padding:20px}.present-demo h2{margin:0 0 8px}.present-buttons{display:flex;gap:8px;flex-wrap:wrap}.present-demo p{font-size:14px;margin:10px 0}.present-data{line-height:1.8;font-size:14px}</style>
+<script>
+{
+const demo=document.createElement('section');demo.className='present-demo';
+demo.innerHTML='<h2>簡報示範</h2><p>兩天各三餐的測試數據，點選日期展示對應動畫。不必等到晚上 10 點，也不會存入個人紀錄。</p><div class="present-buttons"><button type="button" id="demoSuccess">♥ 示範達標</button><button type="button" id="demoBelow">🔔 示範未達標</button><button type="button" id="demoExit" hidden>結束示範</button></div><p id="demoCaption" role="status" aria-live="polite"></p><div id="demoData" class="present-data" hidden></div>';
+document.querySelector('.datebar').after(demo);
+const demoCases={success:{total:90,goal:80,items:['早餐：蛋吐司＋無糖豆漿 · 20 克','午餐：雞腿便當 · 30 克','晚餐：雞胸肉飯＋雞蛋 · 40 克']},below:{total:45,goal:80,items:['早餐：蛋吐司 · 11 克','午餐：滷肉飯 · 14 克','晚餐：餛飩湯 · 20 克']}};
+let demoActive=false,demoOriginalDate=null;
+const demoToday=localDate(new Date()),demoYesterday=shift(demoToday,-1);
+demoCases.success.date=demoYesterday;demoCases.below.date=demoToday;
+$('demoSuccess').textContent=demoYesterday+' · 達標 ♥';$('demoBelow').textContent=demoToday+' · 未達標 🔔';
+function showDemo(kind){const data=demoCases[kind],achieved=kind==='success';if(!demoActive)demoOriginalDate=$('date').value;demoActive=true;$('date').value=data.date;$('demoExit').hidden=false;$('demoCaption').textContent=data.date+' · 示範資料 · 模擬晚上 22:00 · '+(achieved?'已達標':'未達標');$('demoData').hidden=false;$('demoData').replaceChildren();for(const text of data.items){const line=document.createElement('div');line.textContent=text;$('demoData').append(line);}const note=document.createElement('p');note.textContent='以上克數是簡報用測試數據，不是餐點營養參考值。';$('demoData').append(note);$('list').replaceChildren();for(const text of data.items){const row=document.createElement('div');row.className='item';row.textContent=text;$('list').append(row);}$('count').textContent='3 筆（示範）';
+$('total').textContent=data.total;$('goalText').textContent=data.goal;$('remaining').textContent=achieved?'已達成每日目標 ✓':'距離目標還有 '+(data.goal-data.total)+' 克';$('percent').textContent=Math.round(data.total/data.goal*100)+'%';$('fill').style.width=Math.min(data.total/data.goal*100,100)+'%';$('progress').setAttribute('aria-valuemax',data.goal);$('progress').setAttribute('aria-valuenow',Math.min(data.total,data.goal));
+const panel=document.querySelector('.night-feedback');panel.hidden=false;const icon=panel.querySelector('.night-icon');icon.className='night-icon';icon.textContent=achieved?'♥':'🔔';void icon.offsetWidth;icon.classList.add(achieved?'night-heart':'night-reminder');panel.querySelector('h2').textContent=achieved?'今天達標，送你一顆愛心！':'今天的蛋白質還沒達標';panel.querySelector('.night-message').textContent=achieved?'已記錄 90 克，達成 80 克目標。':'已記錄 45／80 克，距離目標還差 35 克。若有漏記，可以補上今天的餐點。';panel.querySelector('.night-date').textContent=data.date+' · 模擬 22:00 · 非真實紀錄';}
+function exitDemo(){demoActive=false;if(demoOriginalDate)$('date').value=demoOriginalDate;demoOriginalDate=null;$('demoExit').hidden=true;$('demoData').hidden=true;$('demoCaption').textContent='已結束示範，恢復你的飲食數據。';document.querySelector('.night-feedback').hidden=true;render();}
+$('demoSuccess').onclick=()=>showDemo('success');$('demoBelow').onclick=()=>showDemo('below');$('demoExit').onclick=exitDemo;
+// Return to real numbers before a user operates any real record controls.
+document.addEventListener('click',event=>{if(demoActive&&!demo.contains(event.target)&&!document.querySelector('.night-feedback').contains(event.target))exitDemo();},true);
+document.addEventListener('change',event=>{if(demoActive&&!demo.contains(event.target))exitDemo();},true);
+}
+</script>
+<script>
+{
+const emojis={'早餐':'🌅','午餐':'🍱','晚餐':'🌙','點心':'🍪'};
+const mealEmoji=name=>/豆漿|牛奶/.test(name)?'🥛':/蛋餅|蛋吐司/.test(name)?'🍳':/三明治|吐司/.test(name)?'🥪':/肉包/.test(name)?'🥟':/便當|飯/.test(name)?'🍱':/麵/.test(name)?'🍜':/餛飩|水餃/.test(name)?'🥟':'🍽️';
+document.querySelector('.brand').textContent='📔 我的蛋白日記';
+const decorateTitle=(selector,prefix)=>{const node=document.querySelector(selector);if(node)node.textContent=prefix+' '+node.textContent;};
+decorateTitle('.progress h2','🎯');decorateTitle('.record-title h2','🍽️');decorateTitle('.estimate-card h2','🧮');decorateTitle('.present-demo h2','🎬');
+for(const title of document.querySelectorAll('h2')){if(title.textContent==='最近七天')title.textContent='📊 最近七天';if(title.textContent==='我的常用餐點')title.textContent='⭐ 我的常用餐點';}
+for(const select of [$('meal'),$('freeMeal')])for(const option of select.options){const name=option.textContent;option.value=name;option.textContent=emojis[name]+' '+name;}
+for(const button of document.querySelectorAll('.quick-meals button'))button.textContent=mealEmoji(button.textContent)+' '+button.textContent;
+$('export').textContent='📥 匯出備份';$('import').textContent='📤 匯入備份';$('today').textContent='📅 回到今天';
+const decorateOptions=()=>{for(const option of $('freeChoice').options){if(option.value&&!option.dataset.emoji){option.textContent=mealEmoji(option.textContent)+' '+option.textContent;option.dataset.emoji='yes';}}};
+decorateOptions();new MutationObserver(decorateOptions).observe($('freeChoice'),{childList:true,subtree:true});
+}
+</script><style>.edit-dialog{border:1px solid var(--line);border-radius:20px;padding:26px;max-width:440px;width:calc(100% - 32px);color:var(--ink);background:#fff9ff}.edit-dialog::backdrop{background:#35213d66}.edit-dialog h2{margin:0 0 16px}.edit-dialog label{display:block;margin:12px 0 6px}.edit-actions{display:flex;gap:10px;margin-top:20px}.edit-actions .primary{margin:0}.edit-record{font-size:13px;padding:6px 9px}.edit-dialog p{font-size:13px}</style>
+<script>
+{
+const editDialog=document.createElement('dialog');editDialog.className='edit-dialog';editDialog.setAttribute('aria-labelledby','editTitle');
+editDialog.innerHTML='<form id="editForm"><h2 id="editTitle">✏️ 編輯飲食紀錄</h2><label for="editName">餐點名稱</label><input id="editName" maxlength="80" required><label for="editProtein">蛋白質（克）</label><input id="editProtein" type="number" min="0" max="1000" step="0.1" required><label for="editDate">日期</label><input id="editDate" type="date" required><label for="editMeal">餐別</label><select id="editMeal"><option value="早餐">🌅 早餐</option><option value="午餐">🍱 午餐</option><option value="晚餐">🌙 晚餐</option><option value="點心">🍪 點心</option></select><p>估算紀錄會保留原始參考資料；此處修改的是你確認後的克數。</p><div class="edit-actions"><button class="primary" type="submit">儲存修改</button><button type="button" id="editCancel">取消</button></div></form>';
+document.body.append(editDialog);let editId=null;
+window.editDiaryEntry=id=>{const entry=state.entries.find(e=>e.id===id);if(!entry)return;editId=id;$('editName').value=entry.name;$('editProtein').value=entry.protein;$('editDate').value=entry.date;$('editMeal').value=entry.meal;editDialog.showModal();};
+$('editCancel').onclick=()=>editDialog.close();$('editName').oninput=()=> $('editName').setCustomValidity('');
+$('editForm').onsubmit=event=>{event.preventDefault();const original=state.entries.find(e=>e.id===editId);if(!original)return;const name=$('editName').value.trim(),protein=Number($('editProtein').value),date=$('editDate').value,meal=$('editMeal').value;if(!name){$('editName').setCustomValidity('請輸入餐點名稱');$('editName').reportValidity();return;}if(!date||!Number.isFinite(protein)||protein<0||protein>1000)return;
+const updated={...original,name,protein,date,meal};const foods=(state.customFoods||[]).map(f=>({...f}));if(!original.source&&protein>0){const index=foods.findIndex(f=>f.name===original.name);const duplicate=foods.findIndex(f=>f.name===name);if(duplicate>=0)foods[duplicate]={name,protein};else if(index>=0)foods[index]={name,protein};else foods.push({name,protein});}
+if(persist({...state,entries:state.entries.map(e=>e.id===editId?updated:e),customFoods:foods})){$('date').value=date;render();editDialog.close();$('status').textContent='已更新 '+name+' 的飲食紀錄。';}};
+}
+</script><style>.meal-reminder{display:flex;gap:14px;align-items:center;background:#fff3dc;border:1px solid #e6c69a;border-radius:16px;padding:16px 20px;margin:20px 0}.meal-reminder[hidden]{display:none}.meal-reminder-icon{font-size:34px;animation:meal-nudge 1.2s ease-in-out 3}.meal-reminder p{margin:4px 0;font-size:14px;color:#795a35}.meal-reminder button{margin-left:auto;white-space:nowrap}.meal-reminder strong{color:#694920}@keyframes meal-nudge{0%,100%{transform:translateY(0) rotate(0)}35%{transform:translateY(-6px) rotate(-8deg)}70%{transform:translateY(-3px) rotate(8deg)}}@media(prefers-reduced-motion:reduce){.meal-reminder-icon{animation:none}}@media(max-width:600px){.meal-reminder{flex-wrap:wrap}.meal-reminder button{margin-left:0;width:100%}}</style>
+<script>
+{
+const mealReminder=document.createElement('section');mealReminder.className='meal-reminder';mealReminder.hidden=true;mealReminder.setAttribute('role','status');mealReminder.setAttribute('aria-live','polite');
+mealReminder.innerHTML='<span class="meal-reminder-icon" aria-hidden="true">🍽️</span><div><strong>今天吃了什麼？別忘了記錄喔！</strong><p>今天還沒有用餐紀錄，花一點時間記下第一餐吧。</p></div><button type="button">✍️ 記錄今天用餐</button>';
+document.querySelector('.datebar').after(mealReminder);
+const reminderToday=()=>{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());return ['year','month','day'].map(k=>parts.find(p=>p.type===k).value).join('-');};
+function updateMealReminder(){const today=reminderToday();mealReminder.hidden=state.entries.some(e=>e.date===today);}
+mealReminder.querySelector('button').onclick=()=>{$('date').value=reminderToday();render();$('freeDescription').scrollIntoView({behavior:'smooth',block:'center'});$('freeDescription').focus({preventScroll:true});};
+const originalMealRender=render;render=function(){originalMealRender();updateMealReminder();};
+updateMealReminder();setInterval(updateMealReminder,60000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateMealReminder();});
+}
+</script></body></html>
